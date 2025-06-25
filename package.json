@@ -1,8 +1,7 @@
 {
   "private": true,
   "workspaces": [
-    "client/*",
-    "server/*"
+    "apps/*"
   ],
   "scripts": {
     "build": "turbo run build",
