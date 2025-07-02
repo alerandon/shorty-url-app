@@ -1,10 +1,10 @@
-import User from '../models/user.model';
+import User from '../models/url.model';
 import {
   createUserSchema,
   TCreateUserInput,
   TUpdateUserInput,
   updateUserSchema,
-} from '../schemas/user.schema';
+} from '../schemas/url.schema';
 
 export async function getAllUsers() {
   return await User.findAll();

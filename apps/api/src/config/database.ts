@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 import { defineRelationships } from '../models/relationships';
-import { initUserModel } from '../models/user.model';
+import { initUserModel } from '../models/url.model';
 
 dotenv.config();
 
