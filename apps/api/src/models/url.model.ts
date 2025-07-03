@@ -44,6 +44,11 @@ export function initUserModel(sequelize: Sequelize) {
       modelName: 'Url',
       tableName: 'urls',
       timestamps: true,
+      hooks: {
+        beforeValidate: (url: Url) => {
+          if (!url.shortCode) url.shortCode = nanoid(6);
+        },
+      },
     },
   );
 }

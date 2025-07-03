@@ -2,8 +2,6 @@ import { z } from 'zod';
 
 export const createUrlSchema = z.object({
   originalUrl: z.string().url().min(1),
-  shortCode: z.string().min(1),
-  visitCount: z.number().int().min(0).default(0),
   guestId: z.string().min(1),
 });
 
