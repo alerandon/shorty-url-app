@@ -1,17 +1,18 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
-import argon2 from 'argon2';
+import { nanoid } from 'nanoid';
 
-class User extends Model {
+class Url extends Model {
   declare id: string;
   declare originalUrl: string;
   declare shortCode: string;
   declare visitCount: number;
+  declare guestId: string;
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
 }
 
 export function initUserModel(sequelize: Sequelize) {
-  User.init(
+  Url.init(
     {
       id: {
         type: DataTypes.UUID,
@@ -32,6 +33,11 @@ export function initUserModel(sequelize: Sequelize) {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      guestId: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
+        unique: true,
+      },
     },
     {
       sequelize,
@@ -42,4 +48,4 @@ export function initUserModel(sequelize: Sequelize) {
   );
 }
 
-export default User;
+export default Url;

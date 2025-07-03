@@ -1,12 +1,15 @@
 import { z } from 'zod';
 
-export const createUserSchema = z.object({
-  username: z.string().min(1),
-  email: z.string().email().min(1),
-  password: z.string().min(6).max(128),
+export const createUrlSchema = z.object({
+  originalUrl: z.string().url().min(1),
+  shortCode: z.string().min(1),
+  visitCount: z.number().int().min(0).default(0),
+  guestId: z.string().min(1),
 });
 
-export const updateUserSchema = createUserSchema.partial();
+export const updateUrlSchema = createUrlSchema.partial().pick({
+  originalUrl: true,
+});
 
-export type TCreateUserInput = z.infer<typeof createUserSchema>;
-export type TUpdateUserInput = z.infer<typeof updateUserSchema>;
+export type TCreateUrlInput = z.infer<typeof createUrlSchema>;
+export type TUpdateUrlInput = z.infer<typeof updateUrlSchema>;

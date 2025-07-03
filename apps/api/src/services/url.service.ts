@@ -1,34 +1,34 @@
-import User from '../models/url.model';
+import Url from '../models/url.model';
 import {
-  createUserSchema,
-  TCreateUserInput,
-  TUpdateUserInput,
-  updateUserSchema,
+  createUrlSchema,
+  TCreateUrlInput,
+  TUpdateUrlInput,
+  updateUrlSchema,
 } from '../schemas/url.schema';
 
-export async function getAllUsers() {
-  return await User.findAll();
+export async function getUrls(id: string) {
+  return await Url.findAll({ where: { guestId: id } });
 }
 
-export async function getUserById(id: string) {
-  return await User.findByPk(id);
+export async function viewUrl(shortCode: string) {
+  return await Url.findOne({ where: { shortCode } });
 }
 
-export async function createUser(data: TCreateUserInput) {
-  const validatedData = createUserSchema.parse(data);
-  return await User.create(validatedData);
+export async function createUrl(data: TCreateUrlInput) {
+  const validatedData = createUrlSchema.parse(data);
+  return await Url.create(validatedData);
 }
 
-export async function updateUser(id: string, data: TUpdateUserInput) {
-  const validatedData = updateUserSchema.parse(data);
-  const user = await User.findByPk(id);
-  if (!user) return null;
-  return await user.update(validatedData);
+export async function updateUrl(id: string, data: TUpdateUrlInput) {
+  const validatedData = updateUrlSchema.parse(data);
+  const url = await Url.findByPk(id);
+  if (!url) throw new Error('URL not found');
+  return await url.update(validatedData);
 }
 
-export async function deleteUser(id: string) {
-  const user = await User.findByPk(id);
-  if (!user) return null;
-  await user.destroy();
-  return user;
+export async function deleteUrl(id: string) {
+  const url = await Url.findByPk(id);
+  if (!url) throw new Error('URL not found');
+  await url.destroy();
+  return { message: 'URL deleted successfully' };
 }
