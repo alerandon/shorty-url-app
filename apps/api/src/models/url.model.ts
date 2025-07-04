@@ -32,6 +32,7 @@ export function initUserModel(sequelize: Sequelize) {
       visitCount: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        defaultValue: 0,
       },
       guestId: {
         type: DataTypes.STRING(100),

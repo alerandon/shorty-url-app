@@ -18,7 +18,6 @@ export async function viewUrl(req: Request, res: Response) {
   try {
     const { body } = req;
     const url = await urlService.viewUrl(body);
-    if (!url) return res.status(404).json({ message: 'URL not found' });
     res.redirect(url.originalUrl);
   } catch (error) {
     errorHandler(error, res);
@@ -28,8 +27,8 @@ export async function viewUrl(req: Request, res: Response) {
 export async function createUrl(req: Request, res: Response) {
   try {
     const { body } = req;
-    const user = await urlService.createUrl(body);
-    res.status(201).json(user);
+    const url = await urlService.createUrl(body);
+    res.status(201).json(url);
   } catch (error) {
     errorHandler(error, res);
   }
@@ -37,10 +36,12 @@ export async function createUrl(req: Request, res: Response) {
 
 export async function updateUrl(req: Request, res: Response) {
   try {
-    const { id } = req.params;
-    const { body } = req;
-    const user = await urlService.updateUrl(id, body);
-    res.status(200).json(user);
+    const {
+      body,
+      params: { id },
+    } = req;
+    const url = await urlService.updateUrl(id, body);
+    res.status(200).json(url);
   } catch (error) {
     errorHandler(error, res);
   }
