@@ -5,7 +5,9 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev"
+    "dev": "turbo run dev",
+    "dev:api": "turbo run dev --filter=api",
+    "dev:client": "turbo run dev --filter=client"
   },
   "devDependencies": {
     "eslint": "^9.17.0",
