@@ -6,8 +6,6 @@ export async function getUrls(req: Request, res: Response) {
   try {
     const { id } = req.params;
     const urls = await urlService.getUrls(id);
-    if (!urls || urls.length === 0)
-      return res.status(404).json({ message: 'No URLs found' });
     res.status(200).json(urls);
   } catch (error) {
     errorHandler(error, res);

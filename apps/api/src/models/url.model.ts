@@ -1,57 +1,24 @@
-import { Model, DataTypes, Sequelize } from 'sequelize';
-import { nanoid } from 'nanoid';
+import mongoose, { Schema, Document } from 'mongoose';
 
-class Url extends Model {
-  declare id: string;
-  declare originalUrl: string;
-  declare shortCode: string;
-  declare visitCount: number;
-  declare guestId: string;
-  declare readonly createdAt: Date;
-  declare readonly updatedAt: Date;
+export interface IUrl extends Document {
+  originalUrl: string;
+  shortCode: string;
+  visitCount: number;
+  guestId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export function initUserModel(sequelize: Sequelize) {
-  Url.init(
-    {
-      id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        primaryKey: true,
-      },
-      originalUrl: {
-        type: DataTypes.STRING(50),
-        allowNull: false,
-        unique: true,
-      },
-      shortCode: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
-        unique: true,
-      },
-      visitCount: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 0,
-      },
-      guestId: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
-        unique: true,
-      },
-    },
-    {
-      sequelize,
-      modelName: 'Url',
-      tableName: 'urls',
-      timestamps: true,
-      hooks: {
-        beforeValidate: (url: Url) => {
-          if (!url.shortCode) url.shortCode = nanoid(6);
-        },
-      },
-    },
-  );
-}
+const UrlSchema = new Schema<IUrl>(
+  {
+    originalUrl: { type: String, required: true, unique: true },
+    shortCode: { type: String, required: true, unique: true },
+    visitCount: { type: Number, required: true, default: 0 },
+    guestId: { type: String, required: true },
+  },
+  { timestamps: true },
+);
+
+const Url = mongoose.model<IUrl>('Url', UrlSchema);
 
 export default Url;

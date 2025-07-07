@@ -9,32 +9,36 @@ import {
 const urlNotFoundMsg = 'URL not found';
 
 export async function getUrls(id: string) {
-  return await Url.findAll({ where: { guestId: id } });
+  const urls = await Url.find({ guestId: id });
+  if (!urls?.length) throw new Error('No URLs found');
+  return urls;
 }
 
 export async function viewUrl(shortCode: string) {
-  const url = await Url.findOne({ where: { shortCode } });
+  const url = await Url.findOne({ shortCode });
   if (!url) throw new Error(urlNotFoundMsg);
-  url.increment('visitCount', { by: 1 });
+  url.visitCount++;
+  await url.save();
   return url;
 }
 
 export async function createUrl(data: TCreateUrlInput) {
   const validatedData = createUrlSchema.parse(data);
-  return await Url.create(validatedData);
+  const url = new Url(validatedData);
+  return await url.save();
 }
 
 export async function updateUrl(id: string, data: TUpdateUrlInput) {
   const validatedData = updateUrlSchema.parse(data);
-  const url = await Url.findByPk(id);
+  const url = await Url.findById(id);
   if (!url) throw new Error(urlNotFoundMsg);
-  return await url.update(validatedData);
+  Object.assign(url, validatedData);
+  return await url.save();
 }
 
 export async function deleteUrl(id: string) {
-  const url = await Url.findByPk(id);
+  const url = await Url.findById(id);
   if (!url) throw new Error(urlNotFoundMsg);
-  await url.destroy();
-  const response = { message: 'URL deleted successfully' };
-  return response;
+  await url.deleteOne();
+  return { message: 'URL deleted successfully' };
 }

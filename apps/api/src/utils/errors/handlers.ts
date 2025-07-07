@@ -1,12 +1,9 @@
 import { Response } from 'express';
-import { ZodError } from 'zod';
-import {
-  ValidationError as SequelizeValidationError,
-  UniqueConstraintError as SequelizeUniqueConstraintError,
-} from 'sequelize';
+import { ZodError, ZodIssue } from 'zod';
+import { Error as MongooseError } from 'mongoose';
 
 export function handleZodError(error: ZodError, res: Response) {
-  const errorMessages = error.errors.map((err) => err.message);
+  const errorMessages = error.errors.map((err: ZodIssue) => err.message);
   return res.status(400).json({
     message: 'Validation Error',
     errors: errorMessages,
@@ -14,33 +11,38 @@ export function handleZodError(error: ZodError, res: Response) {
   });
 }
 
-export function handleSequelizeUniqueConstraintError(
-  error: SequelizeUniqueConstraintError,
-  res: Response,
-) {
-  const errorMessage = error.message ?? 'Error de clave unica duplicada';
-  return res.status(400).json({
-    message: 'Database Unique Constraint Error',
-    error: errorMessage,
-  });
-}
+export function handleMongooseError(error: unknown, res: Response) {
+  const isValidationError = error instanceof MongooseError.ValidationError;
+  const isDuplicateKeyError = (error as any)?.code === 11000;
 
-export function handleSequelizeValidationError(
-  error: SequelizeValidationError,
-  res: Response,
-) {
-  const errorMessages = error.errors.map((err) => err.message);
-  return res.status(400).json({
-    message: 'Database Validation Error',
-    errors: errorMessages,
-    details: error.errors,
+  if (isValidationError) {
+    const errorMessages = Object.values(
+      (error as MongooseError.ValidationError).errors,
+    ).map((err) => (err as MongooseError.ValidatorError).message);
+    return res.status(400).json({
+      message: 'Mongoose Validation Error',
+      errors: errorMessages,
+      details: (error as MongooseError.ValidationError).errors,
+    });
+  }
+
+  if (isDuplicateKeyError) {
+    return res.status(400).json({
+      message: 'Duplicate key error',
+      error: (error as any).keyValue,
+    });
+  }
+
+  return res.status(500).json({
+    message: 'Mongoose Error',
+    error: (error as any).message || error,
   });
 }
 
 export function handleGenericError(error: Error, res: Response) {
   return res.status(500).json({
     message: 'Internal Server Error',
-    error: `${error.message}`,
+    error: error.message,
   });
 }
 
