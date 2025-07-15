@@ -1,13 +1,12 @@
-import type { FC, FormEvent } from 'react';
-import { useState } from 'react';
+import React from 'react';
 
-const LinkInput: FC = () => {
-  const [url, setUrl] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [shortUrl, setShortUrl] = useState('');
-  const [error, setError] = useState('');
+const LinkInput: React.FC = () => {
+  const [url, setUrl] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+  const [shortUrl, setShortUrl] = React.useState('');
+  const [error, setError] = React.useState('');
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setShortUrl('');
@@ -36,9 +35,9 @@ const LinkInput: FC = () => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-center">
+    <div className="w-full flex flex-col items-center justify-center mt-8">
       <form
-        className="w-full flex items-center justify-between mt-8 shadow-lg rounded-full p-1 bg-[#28213B]"
+        className="w-full max-w-lg md:max-w-2xl md:w-10/12 flex items-center justify-between shadow-lg rounded-full p-1 bg-[#28213B]"
         onSubmit={handleSubmit}
       >
         <input
@@ -47,12 +46,12 @@ const LinkInput: FC = () => {
           placeholder="Enter your link here!"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          className="md:w-96 text-xs md:text-base bg-transparent outline-none px-3 md:px-6 py-3 text-white placeholder:text-gray-400 rounded-full font-medium"
+          className="w-full text-xs md:text-base bg-transparent outline-none pl-3 md:pl-6 py-3 text-white placeholder:text-gray-400 rounded-full font-medium"
           disabled={loading}
         />
         <button
           type="submit"
-          className="ml-2 px-3 md:px-6 py-3 bg-[#3d3757]/80 hover:bg-[#4b4370] font-semibold text-xs md:text-base rounded-full transition-colors duration-200 shadow disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+          className="min-w-28 md:min-w-40 ml-2 px-3 md:px-6 py-3 bg-[#3d3757]/80 hover:bg-[#4b4370] font-semibold text-xs md:text-base rounded-full transition-colors duration-200 shadow disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
           disabled={loading}
         >
           {loading ? 'Shortening...' : 'Shorten URL'}
