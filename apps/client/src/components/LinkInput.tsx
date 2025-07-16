@@ -37,7 +37,7 @@ const LinkInput: React.FC = () => {
   return (
     <div className="w-full flex flex-col items-center justify-center mt-8">
       <form
-        className="w-full max-w-lg md:max-w-2xl md:w-10/12 flex items-center justify-between shadow-lg rounded-full p-1 bg-[#28213B]"
+        className="w-full max-w-lg md:max-w-2xl md:w-10/12 flex items-center justify-between shadow-lg rounded-full p-1 bg-primary"
         onSubmit={handleSubmit}
       >
         <input
@@ -46,7 +46,7 @@ const LinkInput: React.FC = () => {
           placeholder="Enter your link here!"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          className="w-full text-xs md:text-base bg-transparent outline-none pl-3 md:pl-6 py-3 text-white placeholder:text-gray-400 rounded-full font-medium"
+          className="w-full text-xs md:text-base bg-transparent outline-none pl-3 md:pl-6 py-3  placeholder:text-gray-400 rounded-full font-medium"
           disabled={loading}
         />
         <button
