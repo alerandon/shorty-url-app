@@ -14,15 +14,3 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-/* FIXME: This is temporary, please put this on tailwind classes */
-th {
-  border-bottom: 1px solid rgba(230, 230, 230, 0.4);
-  font-weight: 500;
-  opacity: 40%;
-}
-
-/* TODO: styles for border radius on tr:last-child > td:first-child and last-child */
-tr:last-child > td {
-  border-bottom: 1px solid transparent;
-}
