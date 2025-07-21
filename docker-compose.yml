@@ -1,6 +1,8 @@
 services:
   client:
     container_name: client
+    env_file:
+      - ./apps/client/.env
     build:
       context: ./apps/client
       dockerfile: Dockerfile.dev
@@ -11,12 +13,14 @@ services:
       - shortyurl_network
   api:
     container_name: api
+    env_file:
+      - ./apps/api/.env
     build:
       context: ./apps/api
       dockerfile: Dockerfile.dev
     restart: always
     ports:
-      - 3001:3001
+      - 3000:3000
     networks:
       - shortyurl_network
     depends_on:
@@ -26,10 +30,12 @@ services:
     container_name: db
     image: mongo:latest
     restart: always
+    env_file:
+      - ./apps/db/.env
     environment:
-      MONGO_INITDB_ROOT_USERNAME: {DB_USER}
-      MONGO_INITDB_ROOT_PASSWORD: {DB_PASSWORD}
-      MONGO_INITDB_DATABASE: {DB_NAME}
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${DB_NAME}
     ports:
       - 27017:27017
     volumes:
