@@ -1,0 +1,57 @@
+services:
+  client:
+    container_name: client
+    build:
+      context: ./apps/client
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - 5173:5173
+    networks:
+      - shortyurl_network
+  api:
+    container_name: api
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - 3001:3001
+    networks:
+      - shortyurl_network
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    container_name: db
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: {DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: {DB_PASSWORD}
+      MONGO_INITDB_DATABASE: {DB_NAME}
+    ports:
+      - 27017:27017
+    volumes:
+      - db_data:/data/db
+    networks:
+      - shortyurl_network
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'sh',
+          '-c',
+          "mongosh --quiet 127.0.0.1/test --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' > /dev/null 2>&1",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+networks:
+  shortyurl_network:
+    driver: bridge
+
+volumes:
+  db_data:
