@@ -1,18 +1,20 @@
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
 
-dotenv.config();
+const connectDB = async () => {
+  const DB_USER = process.env.API_DB_USER || 'user';
+  const DB_PASSWORD = process.env.API_DB_PASSWORD || 'password';
+  const DB_HOST = process.env.API_DB_HOST || 'mongodb';
+  const DB_PORT = process.env.API_DB_PORT || '27017';
+  const DB_NAME = process.env.API_DB_NAME || 'shorty-url-app';
 
-const MONGO_URI =
-  process.env.MONGO_URI || 'mongodb://localhost:27017/shorty-url-app';
+  const CONN_URI = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`;
 
-mongoose
-  .connect(MONGO_URI)
-  .then(() => {
-    console.log('MongoDB connection established successfully.');
-  })
-  .catch((err: Error) => {
-    console.error('Unable to connect to MongoDB:', err);
-  });
+  try {
+    const conn = await mongoose.connect(CONN_URI);
+    console.log(`MongoDB Conectado: ${conn.connection.host}`);
+  } catch (error) {
+    console.error(`Error de conexión a MongoDB: ${error}`);
+  }
+};
 
-export default mongoose;
+export default connectDB;

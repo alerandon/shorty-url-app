@@ -1,8 +1,8 @@
 services:
   client:
     container_name: client
-    env_file:
-      - ./apps/client/.env
+    # environment:
+    #   CLIENT_VAR: value
     build:
       context: ./apps/client
       dockerfile: Dockerfile.dev
@@ -11,45 +11,64 @@ services:
       - 5173:5173
     networks:
       - shortyurl_network
+    develop:
+      watch:
+        - action: sync
+          path: ./apps/client/src
+          target: /app/client/src
+          ignore:
+            - node_modules/
+            - build/
+        - action: rebuild
+          path: ./apps/client/package.json
   api:
     container_name: api
-    env_file:
-      - ./apps/api/.env
+    environment:
+      API_PORT: ${API_PORT}
+      API_DB_USER: ${API_DB_USER}
+      API_DB_PASSWORD: ${API_DB_PASSWORD}
+      API_DB_HOST: ${API_DB_HOST}
+      API_DB_PORT: ${API_DB_PORT}
+      API_DB_NAME: ${API_DB_NAME}
+      API_JWT_SECRET: ${API_JWT_SECRET}
+      API_NODE_ENV: ${API_NODE_ENV}
     build:
       context: ./apps/api
       dockerfile: Dockerfile.dev
     restart: always
     ports:
-      - 3000:3000
+      - ${API_PORT}:${API_PORT}
     networks:
       - shortyurl_network
     depends_on:
-      db:
+      mongodb:
         condition: service_healthy
-  db:
-    container_name: db
+    develop:
+      watch:
+        - action: sync
+          path: ./apps/api/src
+          target: /app/api/src
+          ignore:
+            - node_modules/
+            - build/
+        - action: rebuild
+          path: ./apps/api/package.json
+  mongodb:
+    container_name: mongodb
     image: mongo:latest
     restart: always
-    env_file:
-      - ./apps/db/.env
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
-      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
-      MONGO_INITDB_DATABASE: ${DB_NAME}
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: shorty-url-app
     ports:
       - 27017:27017
     volumes:
-      - db_data:/data/db
+      - mongodb_data:/data/mongodb
     networks:
       - shortyurl_network
     healthcheck:
-      test:
-        [
-          'CMD',
-          'sh',
-          '-c',
-          "mongosh --quiet 127.0.0.1/test --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' > /dev/null 2>&1",
-        ]
+      test: ['CMD', 'mongosh', '--eval', 'db.runCommand({ ping: 1 })']
       interval: 10s
       timeout: 10s
       retries: 5
@@ -60,4 +79,4 @@ networks:
     driver: bridge
 
 volumes:
-  db_data:
+  mongodb_data:
