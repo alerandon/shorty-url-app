@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', routes);
 app.get('/', (req, res, next) => {
-  res.send({ message: 'Hiiiooigggiiii' });
+  res.send({ message: 'Welcome to my shorty-url API!' });
 });
 
 app.listen(PORT, '0.0.0.0', () => {

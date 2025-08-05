@@ -6,7 +6,8 @@ export async function getUrls(req: Request, res: Response) {
   try {
     const { id } = req.params;
     const urls = await urlService.getUrls(id);
-    res.status(200).json(urls);
+    const data = { data: urls, totalPages: Math.ceil(urls.length / 10) };
+    res.status(200).json(data);
   } catch (error) {
     errorHandler(error, res);
   }
@@ -26,7 +27,8 @@ export async function createUrl(req: Request, res: Response) {
   try {
     const { body } = req;
     const url = await urlService.createUrl(body);
-    res.status(201).json(url);
+    const data = { data: url };
+    res.status(201).json(data);
   } catch (error) {
     errorHandler(error, res);
   }
@@ -39,7 +41,8 @@ export async function updateUrl(req: Request, res: Response) {
       params: { id },
     } = req;
     const url = await urlService.updateUrl(id, body);
-    res.status(200).json(url);
+    const data = { data: url };
+    res.status(200).json(data);
   } catch (error) {
     errorHandler(error, res);
   }
@@ -49,7 +52,11 @@ export async function deleteUrl(req: Request, res: Response) {
   try {
     const { id } = req.params;
     const response = await urlService.deleteUrl(id);
-    res.status(200).json(response);
+    if (!response) {
+      return res.status(404).json({ message: 'URL not found' });
+    }
+    const data = { message: 'URL deleted successfully' };
+    res.status(200).json(data);
   } catch (error) {
     errorHandler(error, res);
   }

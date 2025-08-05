@@ -10,7 +10,6 @@ const urlNotFoundMsg = 'URL not found';
 
 export async function getUrls(id: string) {
   const urls = await Url.find({ guestId: id });
-  if (!urls?.length) throw new Error('No URLs found');
   return urls;
 }
 
