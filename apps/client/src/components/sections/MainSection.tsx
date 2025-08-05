@@ -15,11 +15,8 @@ const MainSection: FC = () => {
   };
 
   const handleUrlCreated = () => {
-    if (page !== 1) {
-      setPage(1);
-    } else {
-      refetch();
-    }
+    if (page !== 1) setPage(1);
+    refetch();
   };
 
   return (

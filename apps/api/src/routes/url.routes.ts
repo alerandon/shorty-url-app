@@ -9,10 +9,13 @@ import {
 
 const router = Router();
 
-router.get('/', getUrls);
-router.get('/:shortCode', visitUrl);
-router.post('/', createUrl);
-router.put('/:shortCode', updateUrl);
-router.delete('/:shortCode', deleteUrl);
+// URLs management endpoints
+router.get('/:guestId', getUrls); // Get URLs by guest user
+router.post('/', createUrl); // Create new URL
+router.put('/:shortCode', updateUrl); // Update existing URL
+router.delete('/:shortCode', deleteUrl); // Delete URL
+
+// Redirect endpoint
+router.get('/visit/:shortCode', visitUrl); // Redirect to original URL
 
 export default router;

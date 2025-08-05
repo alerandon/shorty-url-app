@@ -59,36 +59,39 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
             </tr>
           </thead>
           <tbody>
-            {urls.map((url) => (
-              <tr
-                key={url._id}
-                className="hover:bg-secondary transition-colors duration-200 rounded-2xl"
-              >
-                <td className="px-4 py-3 md:px-6 md:py-4">
-                  <a
-                    href={url.originalUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:underline truncate block max-w-xs"
-                  >
-                    {url.originalUrl}
-                  </a>
-                </td>
-                <td className="px-4 py-3 md:px-6 md:py-4">
-                  <a
-                    href={`${API_URL}/${url.shortCode}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:underline"
-                  >
-                    {`${API_URL}/${url.shortCode}`}
-                  </a>
-                </td>
-                <td className="px-4 py-3 md:px-6 md:py-4">
-                  {formatDate(url.createdAt)}
-                </td>
-              </tr>
-            ))}
+            {urls.map((url) => {
+              const shortUrl = `${API_URL}/visit/${url.shortCode}`;
+              return (
+                <tr
+                  key={url._id}
+                  className="hover:bg-secondary transition-colors duration-200 rounded-2xl"
+                >
+                  <td className="px-4 py-3 md:px-6 md:py-4">
+                    <a
+                      href={url.originalUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:underline truncate block max-w-xs"
+                    >
+                      {url.originalUrl}
+                    </a>
+                  </td>
+                  <td className="px-4 py-3 md:px-6 md:py-4">
+                    <a
+                      href={shortUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:underline"
+                    >
+                      {shortUrl}
+                    </a>
+                  </td>
+                  <td className="px-4 py-3 md:px-6 md:py-4">
+                    {formatDate(url.createdAt)}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       )}

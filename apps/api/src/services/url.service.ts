@@ -8,8 +8,8 @@ import {
 
 const urlNotFoundMsg = 'URL not found';
 
-export async function getUrls(id: string) {
-  const urls = await Url.find({ guestId: id });
+export async function getUrls(guestId: string) {
+  const urls = await Url.find({ guestId });
   return urls;
 }
 

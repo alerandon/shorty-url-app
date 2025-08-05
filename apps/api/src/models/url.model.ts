@@ -12,7 +12,8 @@ export interface IUrl extends Document {
 
 const UrlSchema = new Schema<IUrl>(
   {
-    originalUrl: { type: String, required: true, unique: true },
+    originalUrl: { type: String, required: true },
+    guestId: { type: String, required: true },
     shortCode: {
       type: String,
       required: true,
@@ -20,11 +21,6 @@ const UrlSchema = new Schema<IUrl>(
       default: () => nanoid(7),
     },
     visitCount: { type: Number, required: true, default: 0 },
-    guestId: {
-      type: String,
-      required: true,
-      unique: true,
-    },
   },
   { timestamps: true },
 );

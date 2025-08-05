@@ -4,8 +4,8 @@ import * as urlService from '../services/url.service';
 
 export async function getUrls(req: Request, res: Response) {
   try {
-    const { id } = req.params;
-    const urls = await urlService.getUrls(id);
+    const { guestId } = req.params;
+    const urls = await urlService.getUrls(guestId);
     const data = { data: urls, totalPages: Math.ceil(urls.length / 10) };
     res.status(200).json(data);
   } catch (error) {
@@ -25,8 +25,11 @@ export async function visitUrl(req: Request, res: Response) {
 
 export async function createUrl(req: Request, res: Response) {
   try {
-    const { body } = req;
-    const url = await urlService.createUrl(body);
+    const {
+      body,
+      params: { guestId },
+    } = req;
+    const url = await urlService.createUrl({ ...body, guestId });
     const data = { data: url };
     res.status(201).json(data);
   } catch (error) {
@@ -38,9 +41,9 @@ export async function updateUrl(req: Request, res: Response) {
   try {
     const {
       body,
-      params: { id },
+      params: { shortCode },
     } = req;
-    const url = await urlService.updateUrl(id, body);
+    const url = await urlService.updateUrl(shortCode, body);
     const data = { data: url };
     res.status(200).json(data);
   } catch (error) {

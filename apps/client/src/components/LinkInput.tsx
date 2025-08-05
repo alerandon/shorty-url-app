@@ -1,7 +1,6 @@
 import React from 'react';
 import { useCreateUrl } from '../hooks/useCreateUrl';
 import { getGuestId } from '../utils/guest';
-import { API_URL } from '../globals';
 
 interface LinkInputProps {
   onUrlCreated: () => void;
@@ -14,10 +13,7 @@ const LinkInput: React.FC<LinkInputProps> = ({ onUrlCreated }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!url.trim()) {
-      return;
-    }
-
+    if (!url.trim()) return;
     const guestId = getGuestId();
     const result = await createUrl({ originalUrl: url, guestId });
     if (result) {
