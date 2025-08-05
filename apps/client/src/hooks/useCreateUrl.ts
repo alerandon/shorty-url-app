@@ -14,7 +14,7 @@ export const useCreateUrl = () => {
       setUrl(data);
       return data;
     } catch (err) {
-      setError('Failed to create URL');
+      setError(`Failed to create URL: ${err}`);
     } finally {
       setLoading(false);
     }

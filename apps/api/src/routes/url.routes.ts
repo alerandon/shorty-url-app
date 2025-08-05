@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import {
   getUrls,
-  viewUrl,
+  visitUrl,
   createUrl,
   updateUrl,
   deleteUrl,
@@ -10,7 +10,7 @@ import {
 const router = Router();
 
 router.get('/', getUrls);
-router.get('/:shortCode', viewUrl);
+router.get('/:shortCode', visitUrl);
 router.post('/', createUrl);
 router.put('/:shortCode', updateUrl);
 router.delete('/:shortCode', deleteUrl);

@@ -13,10 +13,10 @@ export async function getUrls(req: Request, res: Response) {
   }
 }
 
-export async function viewUrl(req: Request, res: Response) {
+export async function visitUrl(req: Request, res: Response) {
   try {
     const { body } = req;
-    const url = await urlService.viewUrl(body);
+    const url = await urlService.visitUrl(body);
     res.redirect(url.originalUrl);
   } catch (error) {
     errorHandler(error, res);

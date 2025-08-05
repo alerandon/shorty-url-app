@@ -8,22 +8,22 @@ export const useUrls = (page: number, limit: number) => {
   const [error, setError] = useState<string | null>(null);
   const [totalPages, setTotalPages] = useState(1);
 
-  useEffect(() => {
-    const fetchUrls = async () => {
-      try {
-        setLoading(true);
-        const data = await getUrls(page, limit);
-        setUrls(data.urls);
-        setTotalPages(data.totalPages);
-      } catch (err) {
-        setError(`Failed to fetch URLs: ${err}`);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchUrls = async () => {
+    try {
+      setLoading(true);
+      const response = await getUrls(page, limit);
+      setUrls(response.data);
+      setTotalPages(response.totalPages);
+    } catch (err) {
+      setError(`Failed to fetch URLs: ${err}`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchUrls();
   }, [page, limit]);
 
-  return { urls, loading, error, totalPages };
+  return { urls, loading, error, totalPages, refetch: fetchUrls };
 };

@@ -9,7 +9,7 @@ export const getUrls = async (page: number = 1, limit: number = 10) => {
   return response.json();
 };
 
-export const getUrl = async (shortUrl: string) => {
+export const visitUrl = async (shortUrl: string) => {
   const response = await fetch(`${API_URL}/urls/${shortUrl}`);
   if (!response.ok) {
     throw new Error('Error fetching URL');

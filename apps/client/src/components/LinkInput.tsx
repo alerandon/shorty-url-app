@@ -1,36 +1,28 @@
 import React from 'react';
+import { useCreateUrl } from '../hooks/useCreateUrl';
+import { getGuestId } from '../utils/guest';
+import { API_URL } from '../globals';
 
-const LinkInput: React.FC = () => {
+interface LinkInputProps {
+  onUrlCreated: () => void;
+}
+
+const LinkInput: React.FC<LinkInputProps> = ({ onUrlCreated }) => {
   const [url, setUrl] = React.useState('');
-  const [loading, setLoading] = React.useState(false);
-  const [shortUrl, setShortUrl] = React.useState('');
-  const [error, setError] = React.useState('');
+  const { url: newUrl, loading, error, createUrl } = useCreateUrl();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    setShortUrl('');
 
     if (!url.trim()) {
-      setError('Please enter a URL.');
       return;
     }
-    setLoading(true);
 
-    try {
-      console.log('Dentro del try-catch!!!!');
-      // const res = await fetch('/api/shorten', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ url }),
-      // });
-      // if (!res.ok) throw new Error('Failed to shorten URL');
-      // const data = await res.json();
-      // setShortUrl(data.shortUrl || '');
-    } catch {
-      setError('There was a problem shortening your URL.');
-    } finally {
-      setLoading(false);
+    const guestId = getGuestId();
+    const result = await createUrl({ originalUrl: url, guestId });
+    if (result) {
+      onUrlCreated();
+      setUrl('');
     }
   };
 
@@ -58,19 +50,6 @@ const LinkInput: React.FC = () => {
         </button>
       </form>
       {error && <p className="text-red-400 text-sm mt-3">{error}</p>}
-      {shortUrl && (
-        <div className="mt-4 flex flex-col items-center">
-          <span className="text-green-400 font-semibold">Short URL:</span>
-          <a
-            href={shortUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-400 underline break-all mt-1"
-          >
-            {shortUrl}
-          </a>
-        </div>
-      )}
     </div>
   );
 };
