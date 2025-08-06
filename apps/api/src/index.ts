@@ -13,11 +13,7 @@ await databaseConfig();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.use('/api', routes);
-app.get('/', (req, res, next) => {
-  res.send({ message: 'Welcome to my shorty-url API!' });
-});
+app.use(routes);
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running at http://localhost:${PORT}`);

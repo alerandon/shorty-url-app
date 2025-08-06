@@ -4,7 +4,7 @@ import Hero from '../Hero';
 import LinkInput from '../LinkInput';
 import ShortUrlTable from '../ShortUrlTable';
 import Pagination from '../Pagination';
-import { useUrls } from '../../hooks/useUrls';
+import { useUrls } from '../../hooks/api/urls/useUrls';
 
 const MainSection: FC = () => {
   const [page, setPage] = useState(1);

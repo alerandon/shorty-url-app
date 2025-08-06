@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCreateUrl } from '../hooks/useCreateUrl';
+import { useCreateUrl } from '../hooks/api/urls/useCreateUrl';
 import { getGuestId } from '../utils/guest';
 
 interface LinkInputProps {

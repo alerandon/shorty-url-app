@@ -5,20 +5,11 @@ import {
   TUpdateUrlInput,
   updateUrlSchema,
 } from '../schemas/url.schema';
-
-const urlNotFoundMsg = 'URL not found';
+import { urlNotFoundMsg } from '../utils/messages';
 
 export async function getUrls(guestId: string) {
   const urls = await Url.find({ guestId });
   return urls;
-}
-
-export async function visitUrl(shortCode: string) {
-  const url = await Url.findOne({ shortCode });
-  if (!url) throw new Error(urlNotFoundMsg);
-  url.visitCount++;
-  await url.save();
-  return url;
 }
 
 export async function createUrl(data: TCreateUrlInput) {

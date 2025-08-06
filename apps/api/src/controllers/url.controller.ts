@@ -13,16 +13,6 @@ export async function getUrls(req: Request, res: Response) {
   }
 }
 
-export async function visitUrl(req: Request, res: Response) {
-  try {
-    const { body } = req;
-    const url = await urlService.visitUrl(body);
-    res.redirect(url.originalUrl);
-  } catch (error) {
-    errorHandler(error, res);
-  }
-}
-
 export async function createUrl(req: Request, res: Response) {
   try {
     const {

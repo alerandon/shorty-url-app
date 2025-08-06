@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { getUrls } from '../services/url.service';
-import type { IUrl } from '../types/url.types';
+import { getUrls } from '../../../services/api/url.service';
+import type { IUrl } from '../../../types/url.types';
+import { getGuestId } from '../../../utils/guest';
 
 export const useUrls = (page: number, limit: number) => {
   const [urls, setUrls] = useState<IUrl[]>([]);
@@ -11,7 +12,8 @@ export const useUrls = (page: number, limit: number) => {
   const fetchUrls = async () => {
     try {
       setLoading(true);
-      const response = await getUrls(page, limit);
+      const guestId = getGuestId();
+      const response = await getUrls({ guestId, page, limit });
       setUrls(response.data);
       setTotalPages(response.totalPages);
     } catch (err) {

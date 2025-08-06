@@ -1,7 +1,7 @@
 import React from 'react';
 import NoData from './NoData';
 import type { IUrl } from '../types/url.types';
-import { API_URL } from '../globals';
+import { API_URL, ROOT_URL } from '../globals';
 
 interface ShortUrlTableProps {
   urls: IUrl[];
@@ -60,7 +60,7 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
           </thead>
           <tbody>
             {urls.map((url) => {
-              const shortUrl = `${API_URL}/visit/${url.shortCode}`;
+              const shortUrl = `${ROOT_URL}/${url.shortCode}`;
               return (
                 <tr
                   key={url._id}
