@@ -6,9 +6,9 @@ import {
   deleteUrl,
 } from '../../controllers/url.controller';
 
-const router = Router();
+const router = Router({ mergeParams: true });
 
-router.get('/:guestId', getUrls); // Get URLs by guest user
+router.get('/', getUrls); // Get URLs by guest user
 router.post('/', createUrl); // Create new URL
 router.put('/:shortCode', updateUrl); // Update existing URL
 router.delete('/:shortCode', deleteUrl); // Delete URL

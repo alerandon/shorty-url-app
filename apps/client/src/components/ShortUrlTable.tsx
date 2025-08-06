@@ -1,7 +1,7 @@
 import React from 'react';
 import NoData from './NoData';
 import type { IUrl } from '../types/url.types';
-import { API_URL, ROOT_URL } from '../globals';
+import { ROOT_URL } from '../globals';
 
 interface ShortUrlTableProps {
   urls: IUrl[];

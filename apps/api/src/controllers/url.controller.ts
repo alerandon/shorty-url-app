@@ -31,9 +31,9 @@ export async function updateUrl(req: Request, res: Response) {
   try {
     const {
       body,
-      params: { shortCode },
+      params: { guestId, shortCode },
     } = req;
-    const url = await urlService.updateUrl(shortCode, body);
+    const url = await urlService.updateUrl(guestId, shortCode, body);
     const data = { data: url };
     res.status(200).json(data);
   } catch (error) {
@@ -43,8 +43,8 @@ export async function updateUrl(req: Request, res: Response) {
 
 export async function deleteUrl(req: Request, res: Response) {
   try {
-    const { id } = req.params;
-    const response = await urlService.deleteUrl(id);
+    const { guestId, shortCode } = req.params;
+    const response = await urlService.deleteUrl(guestId, shortCode);
     if (!response) {
       return res.status(404).json({ message: 'URL not found' });
     }

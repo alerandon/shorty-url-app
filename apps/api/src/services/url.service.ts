@@ -18,16 +18,20 @@ export async function createUrl(data: TCreateUrlInput) {
   return await url.save();
 }
 
-export async function updateUrl(id: string, data: TUpdateUrlInput) {
+export async function updateUrl(
+  guestId: string,
+  shortCode: string,
+  data: TUpdateUrlInput,
+) {
   const validatedData = updateUrlSchema.parse(data);
-  const url = await Url.findById(id);
+  const url = await Url.findOne({ shortCode, guestId });
   if (!url) throw new Error(urlNotFoundMsg);
   Object.assign(url, validatedData);
   return await url.save();
 }
 
-export async function deleteUrl(id: string) {
-  const url = await Url.findById(id);
+export async function deleteUrl(guestId: string, shortCode: string) {
+  const url = await Url.findOne({ shortCode, guestId });
   if (!url) throw new Error(urlNotFoundMsg);
   await url.deleteOne();
   return { message: 'URL deleted successfully' };
