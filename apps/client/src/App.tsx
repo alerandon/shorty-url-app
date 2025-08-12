@@ -1,14 +1,12 @@
 import './App.css';
-import FooterSection from './components/sections/FooterSection';
-import HeaderSection from './components/sections/HeaderSection';
-import MainSection from './components/sections/MainSection';
+import { Footer, Header, MainLayout } from '@layout';
 
 function App() {
   return (
     <>
-      <HeaderSection />
-      <MainSection />
-      <FooterSection />
+      <Header />
+      <MainLayout />
+      <Footer />
     </>
   );
 }

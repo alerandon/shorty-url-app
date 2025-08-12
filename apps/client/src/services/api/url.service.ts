@@ -12,19 +12,17 @@ export const getUrls = async ({
   page = 1,
   limit = 10,
 }: GetUrlsProps) => {
-  const response = await fetch(
-    `${API_URL}/urls/${guestId}?page=${page}&limit=${limit}`,
-  );
+  const fetchUrl = `${API_URL}/guests/${guestId}/urls?page=${page}&limit=${limit}`;
+  const response = await fetch(fetchUrl);
   if (!response.ok) throw new Error('Error fetching URLs');
   return response.json();
 };
 
 export const createUrl = async (inputUrlBody: CreateShortURL) => {
-  const response = await fetch(`${API_URL}/urls`, {
+  const fetchUrl = `${API_URL}/guests/${inputUrlBody.guestId}/urls`;
+  const response = await fetch(fetchUrl, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(inputUrlBody),
   });
   if (!response.ok) throw new Error('Error creating URL');

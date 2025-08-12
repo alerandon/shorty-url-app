@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 
-const HeaderSection: FC = () => {
+const Header: FC = () => {
   return (
     <header className="flex items-center p-4 md:p-8">
       <h3 className=" text-lg lg:text-xl font-semibold tracking-wide">
@@ -10,4 +10,4 @@ const HeaderSection: FC = () => {
   );
 };
 
-export default HeaderSection;
+export default Header;

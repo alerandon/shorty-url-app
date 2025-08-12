@@ -1,13 +1,12 @@
-import { useState } from 'react';
-import type { FC } from 'react';
-import Hero from '../Hero';
-import LinkInput from '../LinkInput';
-import ShortUrlTable from '../ShortUrlTable';
-import Pagination from '../Pagination';
+import React from 'react';
+import Hero from './Hero';
+import LinkInput from '../urls/LinkInput';
+import ShortUrlTable from '../urls/ShortUrlTable';
+import Pagination from '../navigation/Pagination';
 import { useUrls } from '../../hooks/api/urls/useUrls';
 
-const MainSection: FC = () => {
-  const [page, setPage] = useState(1);
+const MainLayout: React.FC = () => {
+  const [page, setPage] = React.useState(1);
   const { urls, loading, error, totalPages, refetch } = useUrls(page, 10);
 
   const handlePageChange = (newPage: number) => {
@@ -34,4 +33,4 @@ const MainSection: FC = () => {
   );
 };
 
-export default MainSection;
+export default MainLayout;

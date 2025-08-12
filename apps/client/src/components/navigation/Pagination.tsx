@@ -15,7 +15,6 @@ const Pagination: React.FC<PaginationProps> = ({
 }) => {
   if (totalPages <= 1) return null;
 
-  // Calcula el rango de páginas a mostrar
   const getPages = () => {
     const pages = [];
     let start = Math.max(1, page - 2);

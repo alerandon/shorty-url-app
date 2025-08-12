@@ -1,6 +1,6 @@
 import React from 'react';
-import { useCreateUrl } from '../hooks/api/urls/useCreateUrl';
-import { getGuestId } from '../utils/guest';
+import { useCreateUrl } from '../../hooks/api/urls/useCreateUrl';
+import { getGuestId } from '../../utils/guest';
 
 interface LinkInputProps {
   onUrlCreated: () => void;
@@ -8,7 +8,7 @@ interface LinkInputProps {
 
 const LinkInput: React.FC<LinkInputProps> = ({ onUrlCreated }) => {
   const [url, setUrl] = React.useState('');
-  const { url: newUrl, loading, error, createUrl } = useCreateUrl();
+  const { loading, error, createUrl } = useCreateUrl();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

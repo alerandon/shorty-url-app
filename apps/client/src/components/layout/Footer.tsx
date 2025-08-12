@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 
-const FooterSection: FC = () => {
+const Footer: FC = () => {
   return (
     <footer className="w-full mt-25 mb-16 mx-auto text-center">
       <p className="text-xs md:text-sm font-medium">
@@ -10,4 +10,4 @@ const FooterSection: FC = () => {
   );
 };
 
-export default FooterSection;
+export default Footer;
