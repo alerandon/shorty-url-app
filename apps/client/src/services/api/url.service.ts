@@ -10,12 +10,12 @@ interface GetUrlsProps {
 export const getUrls = async ({
   guestId,
   page = 1,
-  limit = 10,
+  limit = 6,
 }: GetUrlsProps) => {
   const fetchUrl = `${API_URL}/guests/${guestId}/urls?page=${page}&limit=${limit}`;
   const response = await fetch(fetchUrl);
   if (!response.ok) throw new Error('Error fetching URLs');
-  return response.json();
+  return response.json(); // { data, totalPages, page, limit, total }
 };
 
 export const createUrl = async (inputUrlBody: CreateShortURL) => {

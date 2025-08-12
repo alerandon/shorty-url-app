@@ -7,7 +7,7 @@ import { useUrls } from '../../hooks/api/urls/useUrls';
 
 const MainLayout: React.FC = () => {
   const [page, setPage] = React.useState(1);
-  const { urls, loading, error, totalPages, refetch } = useUrls(page, 10);
+  const { urls, loading, error, totalPages, refetch } = useUrls(page, 6);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);

@@ -20,7 +20,7 @@ export const ShortUrlTableSkeleton: React.FC<{ rows?: number }> = ({
               Created
             </th>
             <th className="px-4 py-3 md:px-6 md:py-4 opacity-40 font-medium text-right">
-              Acciones
+              Actions
             </th>
           </tr>
         </thead>

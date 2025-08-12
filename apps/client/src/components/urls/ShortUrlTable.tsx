@@ -10,7 +10,7 @@ interface ShortUrlTableProps {
   urls: IUrl[];
   loading: boolean;
   error: string | null;
-  refetch?: () => Promise<void> | void; // opcional para refrescar tras eliminar
+  refetch?: () => Promise<void> | void;
 }
 
 const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
@@ -19,10 +19,11 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
   error,
   refetch,
 }) => {
-  const { deleteUrl } = useDeleteUrl();
+  const { deleteUrl, error: deleteError } = useDeleteUrl();
   const { addToast } = useToast();
   const [optimistic, setOptimistic] = useState<IUrl[]>(urls);
   const [deletingIds, setDeletingIds] = useState<Set<string>>(new Set());
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
   React.useEffect(() => {
     setOptimistic(urls);
@@ -45,7 +46,6 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
     const target = optimistic.find((u) => u.shortCode === shortCode);
     if (!target) return;
 
-    // Optimistic update
     setDeletingIds((prev) => new Set(prev).add(target._id));
     setOptimistic((prev) => prev.filter((u) => u.shortCode !== shortCode));
 
@@ -54,14 +54,13 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
       addToast('URL eliminada', { variant: 'success' });
       if (refetch) await refetch();
     } else {
-      // rollback
-      addToast('Error eliminando URL', { variant: 'error' });
       setOptimistic((prev) =>
         [...prev, target].sort(
           (a, b) =>
             new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
         ),
       );
+      addToast('Error eliminando URL', { variant: 'error' });
     }
     setDeletingIds((prev) => {
       const next = new Set(prev);
@@ -69,6 +68,22 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
       return next;
     });
   };
+
+  React.useEffect(() => {
+    const closeOnEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpenMenuId(null);
+    };
+    const closeOnClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('[data-actions-menu]')) setOpenMenuId(null);
+    };
+    window.addEventListener('keydown', closeOnEsc);
+    window.addEventListener('mousedown', closeOnClickOutside);
+    return () => {
+      window.removeEventListener('keydown', closeOnEsc);
+      window.removeEventListener('mousedown', closeOnClickOutside);
+    };
+  }, []);
 
   if (loading) return <ShortUrlTableSkeleton />;
 
@@ -100,7 +115,7 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
                 Created
               </th>
               <th className="px-4 py-3 md:px-6 md:py-4 opacity-[40%] font-medium text-right">
-                Acciones
+                Actions
               </th>
             </tr>
           </thead>
@@ -108,6 +123,7 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
             {optimistic.map((url) => {
               const shortUrl = `${ROOT_URL}/${url.shortCode}`;
               const isDeleting = deletingIds.has(url._id);
+              const menuOpen = openMenuId === url._id;
               return (
                 <tr
                   key={url._id}
@@ -134,21 +150,54 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
                   <td className="px-4 py-3 md:px-6 md:py-4">
                     {formatDate(url.createdAt)}
                   </td>
-                  <td className="px-4 py-3 md:px-6 md:py-4 text-right">
-                    <button
-                      onClick={() => handleDelete(url.shortCode)}
-                      aria-label={`Eliminar URL corta ${shortUrl}`}
-                      disabled={isDeleting}
-                      className="text-red-400 hover:text-red-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-xs md:text-sm font-medium focus:outline-none focus-visible:ring focus-visible:ring-red-400/50 rounded"
-                    >
-                      {isDeleting ? 'Eliminando…' : 'Eliminar'}
-                    </button>
+                  <td
+                    className="px-4 py-3 md:px-6 md:py-4 text-right relative"
+                    data-actions-menu
+                  >
+                    <div className="inline-flex items-center justify-end">
+                      <button
+                        type="button"
+                        aria-haspopup="menu"
+                        aria-expanded={menuOpen}
+                        aria-label="Abrir menú de acciones"
+                        disabled={isDeleting}
+                        onClick={() => setOpenMenuId(menuOpen ? null : url._id)}
+                        className={`w-8 h-8 flex items-center justify-center rounded-full hover:bg-secondary/60 focus:outline-none focus-visible:ring focus-visible:ring-indigo-400/50 transition text-lg ${isDeleting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      >
+                        ⋯
+                      </button>
+                    </div>
+                    {menuOpen && (
+                      <div
+                        role="menu"
+                        aria-label="Acciones"
+                        className="absolute right-2 top-10 z-20 min-w-[140px] rounded-md border border-[#e6e6e6]/20 bg-[#1f1c2e] shadow-lg py-1 text-left animate-fade-in"
+                      >
+                        <button
+                          role="menuitem"
+                          onClick={() => {
+                            setOpenMenuId(null);
+                            handleDelete(url.shortCode);
+                          }}
+                          disabled={isDeleting}
+                          className="w-full text-left px-3 py-2 text-xs md:text-sm flex items-center gap-2 hover:bg-secondary/70 text-red-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {isDeleting ? 'Eliminando…' : 'Eliminar'}
+                        </button>
+                        {/* Futuras acciones aquí */}
+                      </div>
+                    )}
                   </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
+      )}
+      {deleteError && (
+        <div className="sr-only" role="alert">
+          {deleteError}
+        </div>
       )}
     </div>
   );
