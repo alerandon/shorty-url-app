@@ -22,7 +22,12 @@ const MainLayout: React.FC = () => {
     <main className="flex flex-col justify-center items-center p-4 md:p-8">
       <Hero />
       <LinkInput onUrlCreated={handleUrlCreated} />
-      <ShortUrlTable urls={urls} loading={loading} error={error} />
+      <ShortUrlTable
+        urls={urls}
+        loading={loading}
+        error={error}
+        refetch={refetch}
+      />
       <Pagination
         page={page}
         totalPages={totalPages}
