@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getUrls } from '../../../services/api/url.service';
+import { getUrls as getUrlsService } from '../../../services/api/url.service';
 import type { IUrl } from '../../../types/url.types';
 import { getGuestId } from '../../../utils/guest';
 
@@ -13,7 +13,7 @@ export const useUrls = (page: number, limit: number) => {
     try {
       setLoading(true);
       const guestId = getGuestId();
-      const response = await getUrls({ guestId, page, limit });
+      const response = await getUrlsService({ guestId, page, limit });
       setUrls(response.data);
       setTotalPages(response.totalPages);
     } catch (err) {
