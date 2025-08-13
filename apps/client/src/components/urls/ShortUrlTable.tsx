@@ -162,7 +162,7 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
                         aria-label="Abrir menú de acciones"
                         disabled={isDeleting}
                         onClick={() => setOpenMenuId(menuOpen ? null : url._id)}
-                        className={`w-8 h-8 flex items-center justify-center rounded-full hover:bg-secondary/60 focus:outline-none focus-visible:ring focus-visible:ring-indigo-400/50 transition text-lg ${isDeleting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        className={`w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-secondary/60 focus:outline-none focus-visible:ring focus-visible:ring-indigo-400/50 transition text-lg ${isDeleting ? 'opacity-50 cursor-not-allowed' : ''}`}
                       >
                         ⋯
                       </button>
@@ -180,7 +180,11 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
                             handleDelete(url.shortCode);
                           }}
                           disabled={isDeleting}
-                          className="w-full text-left px-3 py-2 text-xs md:text-sm flex items-center gap-2 hover:bg-secondary/70 text-red-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className={`w-full text-left px-3 py-2 text-xs md:text-sm flex items-center gap-2 transition-colors
+                            ${isDeleting
+                              ? 'text-red-300 bg-transparent cursor-not-allowed opacity-50'
+                              : 'text-red-400 hover:bg-red-500/10 hover:text-red-500 active:bg-red-600/20 cursor-pointer'
+                            }`}
                         >
                           {isDeleting ? 'Eliminando…' : 'Eliminar'}
                         </button>
