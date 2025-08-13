@@ -10,7 +10,8 @@ export async function getUrls(req: Request, res: Response) {
     const MIN_LIMIT = 1;
 
     const { guestId } = req.params;
-    const { page = DEFAULT_PAGE.toString(), limit = DEFAULT_LIMIT.toString() } = req.query;
+    const { page = DEFAULT_PAGE.toString(), limit = DEFAULT_LIMIT.toString() } =
+      req.query;
 
     const parsedPageNum = parseInt(page as string, 10) || DEFAULT_PAGE;
     const pageNum = Math.max(parsedPageNum, MIN_LIMIT);
@@ -47,20 +48,6 @@ export async function createUrl(req: Request, res: Response) {
     const url = await urlService.createUrl({ ...body, guestId });
     const data = { data: url };
     res.status(201).json(data);
-  } catch (error) {
-    errorHandler(error, res);
-  }
-}
-
-export async function updateUrl(req: Request, res: Response) {
-  try {
-    const {
-      body,
-      params: { guestId, shortCode },
-    } = req;
-    const url = await urlService.updateUrl(guestId, shortCode, body);
-    const data = { data: url };
-    res.status(200).json(data);
   } catch (error) {
     errorHandler(error, res);
   }
