@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import NoData from '../feedback/NoData';
 import type { IUrl } from '../../types/url.types';
 import { ROOT_URL } from '../../globals';
 import { useDeleteUrl } from '../../hooks/api/urls/useDeleteUrl';
 import ShortUrlTableSkeleton from './ShortUrlTableSkeleton';
 import { useToast } from '../../hooks/toast/useToast';
+import { formatDateES } from '../../utils/date';
+import { useDropdownMenu } from '../../hooks/ui/useDropdownMenu';
+import { useOptimisticDelete } from '../../hooks/data/useOptimisticDelete';
 
 interface ShortUrlTableProps {
   urls: IUrl[];
@@ -21,69 +24,29 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
 }) => {
   const { deleteUrl, error: deleteError } = useDeleteUrl();
   const { addToast } = useToast();
-  const [optimistic, setOptimistic] = useState<IUrl[]>(urls);
-  const [deletingIds, setDeletingIds] = useState<Set<string>>(new Set());
-  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
-
-  React.useEffect(() => {
-    setOptimistic(urls);
-  }, [urls]);
-
-  const formatDate = (dateString: Date) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-  };
+  const { toggle, close, isOpen } = useDropdownMenu();
+  const { optimisticItems, isDeleting, deleteItem } = useOptimisticDelete<IUrl>(
+    urls,
+    (u) => u._id,
+  );
 
   const handleDelete = async (shortCode: string) => {
     const confirmed = window.confirm(
       '¿Eliminar este enlace corto? Esta acción no se puede deshacer.',
     );
     if (!confirmed) return;
-    const target = optimistic.find((u) => u.shortCode === shortCode);
+
+    const target = optimisticItems.find((u) => u.shortCode === shortCode);
     if (!target) return;
 
-    setDeletingIds((prev) => new Set(prev).add(target._id));
-    setOptimistic((prev) => prev.filter((u) => u.shortCode !== shortCode));
-
-    const ok = await deleteUrl(shortCode);
+    const ok = await deleteItem(target._id, async () => deleteUrl(shortCode));
     if (ok) {
       addToast('URL eliminada', { variant: 'success' });
       if (refetch) await refetch();
     } else {
-      setOptimistic((prev) =>
-        [...prev, target].sort(
-          (a, b) =>
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
-        ),
-      );
       addToast('Error eliminando URL', { variant: 'error' });
     }
-    setDeletingIds((prev) => {
-      const next = new Set(prev);
-      next.delete(target._id);
-      return next;
-    });
   };
-
-  React.useEffect(() => {
-    const closeOnEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpenMenuId(null);
-    };
-    const closeOnClickOutside = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (!target.closest('[data-actions-menu]')) setOpenMenuId(null);
-    };
-    window.addEventListener('keydown', closeOnEsc);
-    window.addEventListener('mousedown', closeOnClickOutside);
-    return () => {
-      window.removeEventListener('keydown', closeOnEsc);
-      window.removeEventListener('mousedown', closeOnClickOutside);
-    };
-  }, []);
 
   if (loading) return <ShortUrlTableSkeleton />;
 
@@ -99,7 +62,7 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
 
   return (
     <div className="bg-primary w-full min-h-[450px] max-w-xl md:max-w-5xl mt-16 md:mt-24 mx-auto rounded-2xl shadow-lg overflow-hidden">
-      {optimistic.length === 0 ? (
+      {optimisticItems.length === 0 ? (
         <NoData />
       ) : (
         <table className="w-full mx-auto border-collapse md:text-base text-xs">
@@ -120,14 +83,14 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
             </tr>
           </thead>
           <tbody>
-            {optimistic.map((url) => {
+            {optimisticItems.map((url) => {
               const shortUrl = `${ROOT_URL}/${url.shortCode}`;
-              const isDeleting = deletingIds.has(url._id);
-              const menuOpen = openMenuId === url._id;
+              const deleting = isDeleting(url._id);
+              const menuOpen = isOpen(url._id);
               return (
                 <tr
                   key={url._id}
-                  className={`transition-colors duration-200 rounded-2xl ${isDeleting ? 'opacity-40 pointer-events-none' : 'hover:bg-secondary'}`}
+                  className={`transition-colors duration-200 rounded-2xl ${deleting ? 'opacity-40 pointer-events-none' : 'hover:bg-secondary'}`}
                 >
                   <td className="px-4 py-3 md:px-6 md:py-4">
                     <span
@@ -148,7 +111,7 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
                     </a>
                   </td>
                   <td className="px-4 py-3 md:px-6 md:py-4">
-                    {formatDate(url.createdAt)}
+                    {formatDateES(url.createdAt)}
                   </td>
                   <td
                     className="px-4 py-3 md:px-6 md:py-4 text-right relative"
@@ -160,9 +123,9 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
                         aria-haspopup="menu"
                         aria-expanded={menuOpen}
                         aria-label="Abrir menú de acciones"
-                        disabled={isDeleting}
-                        onClick={() => setOpenMenuId(menuOpen ? null : url._id)}
-                        className={`w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-secondary/60 focus:outline-none focus-visible:ring focus-visible:ring-indigo-400/50 transition text-lg ${isDeleting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        disabled={deleting}
+                        onClick={() => toggle(url._id)}
+                        className={`w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-secondary/60 focus:outline-none focus-visible:ring focus-visible:ring-indigo-400/50 transition text-lg ${deleting ? 'opacity-50 cursor-not-allowed' : ''}`}
                       >
                         ⋯
                       </button>
@@ -176,17 +139,18 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
                         <button
                           role="menuitem"
                           onClick={() => {
-                            setOpenMenuId(null);
+                            close();
                             handleDelete(url.shortCode);
                           }}
-                          disabled={isDeleting}
+                          disabled={deleting}
                           className={`w-full text-left px-3 py-2 text-xs md:text-sm flex items-center gap-2 transition-colors
-                            ${isDeleting
-                              ? 'text-red-300 bg-transparent cursor-not-allowed opacity-50'
-                              : 'text-red-400 hover:bg-red-500/10 hover:text-red-500 active:bg-red-600/20 cursor-pointer'
+                            ${
+                              deleting
+                                ? 'text-red-300 bg-transparent cursor-not-allowed opacity-50'
+                                : 'text-red-400 hover:bg-red-500/10 hover:text-red-500 active:bg-red-600/20 cursor-pointer'
                             }`}
                         >
-                          {isDeleting ? 'Eliminando…' : 'Eliminar'}
+                          {deleting ? 'Eliminando…' : 'Eliminar'}
                         </button>
                         {/* Futuras acciones aquí */}
                       </div>
