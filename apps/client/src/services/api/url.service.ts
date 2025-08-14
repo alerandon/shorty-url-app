@@ -15,7 +15,7 @@ export const getUrls = async ({
   const fetchUrl = `${API_URL}/guests/${guestId}/urls?page=${page}&limit=${limit}`;
   const response = await fetch(fetchUrl);
   if (!response.ok) throw new Error('Error fetching URLs');
-  return response.json(); // { data, totalPages, page, limit, total }
+  return response.json();
 };
 
 export const createUrl = async (inputUrlBody: CreateShortURL) => {
@@ -33,14 +33,5 @@ export const deleteUrl = async (guestId: string, shortCode: string) => {
   const fetchUrl = `${API_URL}/guests/${guestId}/urls/${shortCode}`;
   const response = await fetch(fetchUrl, { method: 'DELETE' });
   if (!response.ok) throw new Error('Error deleting URL');
-  // Muchas APIs devuelven 204 No Content en deletes.
-  if (response.status === 204) return { ok: true };
-
-  const contentType = response.headers.get('content-type') || '';
-  if (contentType.includes('application/json')) {
-    return response.json();
-  }
-
-  // Cuerpo vacío u otro tipo: consideramos éxito.
-  return { ok: true };
+  return response.json();
 };

@@ -7,7 +7,6 @@ import ShortUrlTableSkeleton from './ShortUrlTableSkeleton';
 import { useToast } from '../../hooks/toast/useToast';
 import { formatDateES } from '../../utils/date';
 import { useDropdownMenu } from '../../hooks/ui/useDropdownMenu';
-import { useOptimisticDelete } from '../../hooks/data/useOptimisticDelete';
 
 interface ShortUrlTableProps {
   urls: IUrl[];
@@ -25,21 +24,20 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
   const { deleteUrl, error: deleteError } = useDeleteUrl();
   const { addToast } = useToast();
   const { toggle, close, isOpen } = useDropdownMenu();
-  const { optimisticItems, isDeleting, deleteItem } = useOptimisticDelete<IUrl>(
-    urls,
-    (u) => u._id,
-  );
+  const [deletingId, setDeletingId] = React.useState<string | null>(null);
 
   const handleDelete = async (shortCode: string) => {
     const confirmed = window.confirm(
       '¿Eliminar este enlace corto? Esta acción no se puede deshacer.',
     );
     if (!confirmed) return;
-    const target = optimisticItems.find((u) => u.shortCode === shortCode);
+    const target = urls.find((u) => u.shortCode === shortCode);
     if (!target) return;
 
-    const ok = await deleteItem(target._id, async () => deleteUrl(shortCode));
-    if (ok) {
+    setDeletingId(target._id);
+    const isDeleted = await deleteUrl(shortCode);
+    setDeletingId(null);
+    if (isDeleted) {
       addToast('URL eliminada', { variant: 'success' });
       await refetch();
     } else {
@@ -61,7 +59,7 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
 
   return (
     <div className="bg-primary w-full min-h-[450px] max-w-xl md:max-w-5xl mt-16 md:mt-24 mx-auto rounded-2xl shadow-lg overflow-visible">
-      {optimisticItems.length === 0 ? (
+      {urls.length === 0 ? (
         <NoData />
       ) : (
         <table className="w-full mx-auto border-collapse md:text-base text-xs">
@@ -82,9 +80,9 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
             </tr>
           </thead>
           <tbody>
-            {optimisticItems.map((url) => {
+            {urls.map((url) => {
               const shortUrl = `${ROOT_URL}/${url.shortCode}`;
-              const deleting = isDeleting(url._id);
+              const deleting = deletingId === url._id;
               const menuOpen = isOpen(url._id);
               return (
                 <tr
