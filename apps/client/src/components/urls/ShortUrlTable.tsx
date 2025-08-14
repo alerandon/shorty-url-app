@@ -13,7 +13,7 @@ interface ShortUrlTableProps {
   urls: IUrl[];
   loading: boolean;
   error: string | null;
-  refetch?: () => Promise<void> | void;
+  refetch: () => Promise<void> | void;
 }
 
 const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
@@ -35,14 +35,13 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
       '¿Eliminar este enlace corto? Esta acción no se puede deshacer.',
     );
     if (!confirmed) return;
-
     const target = optimisticItems.find((u) => u.shortCode === shortCode);
     if (!target) return;
 
     const ok = await deleteItem(target._id, async () => deleteUrl(shortCode));
     if (ok) {
       addToast('URL eliminada', { variant: 'success' });
-      if (refetch) await refetch();
+      await refetch();
     } else {
       addToast('Error eliminando URL', { variant: 'error' });
     }
@@ -61,7 +60,7 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
   }
 
   return (
-    <div className="bg-primary w-full min-h-[450px] max-w-xl md:max-w-5xl mt-16 md:mt-24 mx-auto rounded-2xl shadow-lg overflow-hidden">
+    <div className="bg-primary w-full min-h-[450px] max-w-xl md:max-w-5xl mt-16 md:mt-24 mx-auto rounded-2xl shadow-lg overflow-visible">
       {optimisticItems.length === 0 ? (
         <NoData />
       ) : (

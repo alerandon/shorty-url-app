@@ -32,22 +32,33 @@ export function useOptimisticDelete<T>(items: T[], getId: (item: T) => string) {
         return false;
       }
 
-      const ok = await action();
-      if (!ok) {
+      let ok = false;
+      try {
+        ok = await action();
+        if (!ok) {
+          // rollback si el servidor indicó fallo
+          setOptimisticItems((prev) => {
+            const next = prev.slice();
+            next.splice(removedIndex, 0, removed as T);
+            return next;
+          });
+        }
+        return ok;
+      } catch {
+        // rollback ante excepciones
         setOptimisticItems((prev) => {
           const next = prev.slice();
           next.splice(removedIndex, 0, removed as T);
           return next;
         });
+        return false;
+      } finally {
+        setDeletingIds((prev) => {
+          const next = new Set(prev);
+          next.delete(idKey);
+          return next;
+        });
       }
-
-      setDeletingIds((prev) => {
-        const next = new Set(prev);
-        next.delete(idKey);
-        return next;
-      });
-
-      return ok;
     },
     [getId],
   );

@@ -6,7 +6,7 @@ export const ShortUrlTableSkeleton: React.FC<{ rows?: number }> = ({
   rows = 6,
 }) => {
   return (
-    <div className="bg-primary w-full min-h-[450px] max-w-xl md:max-w-5xl mt-16 md:mt-24 mx-auto rounded-2xl shadow-lg overflow-hidden">
+    <div className="bg-primary w-full min-h-[450px] max-w-xl md:max-w-5xl mt-16 md:mt-24 mx-auto rounded-2xl shadow-lg overflow-visible">
       <table className="w-full mx-auto border-collapse md:text-base text-xs">
         <thead>
           <tr className="text-left border-b border-white/10">

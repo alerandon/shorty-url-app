@@ -60,8 +60,7 @@ export async function deleteUrl(req: Request, res: Response) {
     if (!response) {
       return res.status(404).json({ message: 'URL not found' });
     }
-    const data = { message: 'URL deleted successfully' };
-    res.status(200).json(data);
+    res.status(204).json('No content');
   } catch (error) {
     errorHandler(error, res);
   }

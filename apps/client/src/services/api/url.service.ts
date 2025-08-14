@@ -33,5 +33,14 @@ export const deleteUrl = async (guestId: string, shortCode: string) => {
   const fetchUrl = `${API_URL}/guests/${guestId}/urls/${shortCode}`;
   const response = await fetch(fetchUrl, { method: 'DELETE' });
   if (!response.ok) throw new Error('Error deleting URL');
-  return response.json();
+  // Muchas APIs devuelven 204 No Content en deletes.
+  if (response.status === 204) return { ok: true };
+
+  const contentType = response.headers.get('content-type') || '';
+  if (contentType.includes('application/json')) {
+    return response.json();
+  }
+
+  // Cuerpo vacío u otro tipo: consideramos éxito.
+  return { ok: true };
 };
