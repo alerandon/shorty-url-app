@@ -33,5 +33,5 @@ export const deleteUrl = async (guestId: string, shortCode: string) => {
   const fetchUrl = `${API_URL}/guests/${guestId}/urls/${shortCode}`;
   const response = await fetch(fetchUrl, { method: 'DELETE' });
   if (!response.ok) throw new Error('Error deleting URL');
-  return response.json();
+  return;
 };

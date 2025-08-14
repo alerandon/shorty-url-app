@@ -41,7 +41,7 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
       addToast('URL eliminada', { variant: 'success' });
       await refetch();
     } else {
-      addToast('Error eliminando URL', { variant: 'error' });
+      addToast(deleteError || 'Error eliminando URL', { variant: 'error' });
     }
   };
 
@@ -149,7 +149,6 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
                         >
                           {deleting ? 'Eliminando…' : 'Eliminar'}
                         </button>
-                        {/* Futuras acciones aquí */}
                       </div>
                     )}
                   </td>
@@ -158,11 +157,6 @@ const ShortUrlTable: React.FC<ShortUrlTableProps> = ({
             })}
           </tbody>
         </table>
-      )}
-      {deleteError && (
-        <div className="sr-only" role="alert">
-          {deleteError}
-        </div>
       )}
     </div>
   );

@@ -1,12 +1,14 @@
 import React from 'react';
 import { useCreateUrl } from '../../hooks/api/urls/useCreateUrl';
 import { getGuestId } from '../../utils/guest';
+import { useToast } from '@hooks/toast/useToast';
 
 interface LinkInputProps {
   onUrlCreated: () => void;
 }
 
 const LinkInput: React.FC<LinkInputProps> = ({ onUrlCreated }) => {
+  const { addToast } = useToast();
   const [url, setUrl] = React.useState('');
   const { loading, error, createUrl } = useCreateUrl();
 
@@ -17,6 +19,7 @@ const LinkInput: React.FC<LinkInputProps> = ({ onUrlCreated }) => {
     const guestId = getGuestId();
     const result = await createUrl({ originalUrl: url, guestId });
     if (result) {
+      addToast('URL creada con éxito', { variant: 'success' });
       onUrlCreated();
       setUrl('');
     }

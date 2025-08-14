@@ -1,10 +1,5 @@
 import Url from '../models/url.model';
-import {
-  createUrlSchema,
-  TCreateUrlInput,
-  TUpdateUrlInput,
-  updateUrlSchema,
-} from '../schemas/url.schema';
+import { createUrlSchema, TCreateUrlInput } from '../schemas/url.schema';
 import { urlNotFoundMsg } from '../utils/messages';
 
 export async function getUrls(guestId: string, page = 1, limit = 10) {
@@ -38,5 +33,4 @@ export async function deleteUrl(guestId: string, shortCode: string) {
   const url = await Url.findOne({ shortCode, guestId });
   if (!url) throw new Error(urlNotFoundMsg);
   await url.deleteOne();
-  return { message: 'URL deleted successfully' };
 }

@@ -56,11 +56,8 @@ export async function createUrl(req: Request, res: Response) {
 export async function deleteUrl(req: Request, res: Response) {
   try {
     const { guestId, shortCode } = req.params;
-    const response = await urlService.deleteUrl(guestId, shortCode);
-    if (!response) {
-      return res.status(404).json({ message: 'URL not found' });
-    }
-    res.status(204).json('No content');
+    await urlService.deleteUrl(guestId, shortCode);
+    res.status(204).end();
   } catch (error) {
     errorHandler(error, res);
   }
