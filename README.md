@@ -1,54 +1,54 @@
 # 🔗 Shorty URL App
 
-Una aplicación moderna de acortamiento de URLs construida con una arquitectura de monorepo que permite a los usuarios crear enlaces cortos y rastrear estadísticas de visitantes de manera sencilla e intuitiva.
+A modern URL shortening application built with a monorepo architecture that allows users to create short links and track visitor statistics in a simple and intuitive way.
 
-## 📋 Descripción
+## 📋 Description
 
-Shorty URL App es una solución completa para el acortamiento de URLs que permite a los usuarios:
+Shorty URL App is a complete URL shortening solution that allows users to:
 
-- 🎯 **Crear enlaces cortos personalizados** a partir de URLs largas
-- 📊 **Monitorear estadísticas** de clics y visitas en tiempo real
-- 👤 **Gestión por sesión de invitado** sin necesidad de registro
-- 🚀 **Interfaz moderna y responsiva** construida con React y TailwindCSS
-- ⚡ **API RESTful robusta** con validaciones y manejo de errores
+- 🎯 **Create custom short links** from long URLs
+- 📊 **Monitor real-time statistics** of clicks and visits
+- 👤 **Guest session management** without registration required
+- 🚀 **Modern and responsive interface** built with React and TailwindCSS
+- ⚡ **Robust RESTful API** with validations and error handling
 
-## 🛠️ Tecnologías Utilizadas
+## 🛠️ Technologies Used
 
 ### Backend (API)
 
-- **Node.js** - Entorno de ejecución de JavaScript
-- **Express.js** - Framework web minimalista y flexible
-- **MongoDB** - Base de datos NoSQL orientada a documentos
-- **Mongoose** - ODM (Object Document Mapper) para MongoDB
-- **TypeScript** - Superset tipado de JavaScript
-- **Zod** - Biblioteca de validación de esquemas TypeScript-first
-- **nanoid** - Generador de IDs únicos y seguros
-- **Nodemon** - Herramienta de desarrollo para recarga automática
+- **Node.js** - JavaScript runtime environment
+- **Express.js** - Minimalist and flexible web framework
+- **MongoDB** - Document-oriented NoSQL database
+- **Mongoose** - ODM (Object Document Mapper) for MongoDB
+- **TypeScript** - Typed superset of JavaScript
+- **Zod** - TypeScript-first schema validation library
+- **nanoid** - Secure and unique ID generator
+- **Nodemon** - Development tool for automatic reload
 
 ### Frontend (Client)
 
-- **React 19** - Biblioteca para construir interfaces de usuario
-- **TypeScript** - Desarrollo tipado y más seguro
-- **Vite** - Herramienta de construcción rápida y moderna
-- **TailwindCSS 4** - Framework de CSS utilitario
-- **React Hooks** - Gestión de estado y efectos
+- **React 19** - Library for building user interfaces
+- **TypeScript** - Typed and safer development
+- **Vite** - Fast and modern build tool
+- **TailwindCSS 4** - Utility-first CSS framework
+- **React Hooks** - State and effects management
 
-### DevOps y Herramientas
+### DevOps and Tools
 
-- **Docker & Docker Compose** - Containerización y orquestación
-- **Turbo** - Sistema de construcción de monorepos de alta performance
-- **ESLint** - Linter para JavaScript/TypeScript
-- **Prettier** - Formateador de código
+- **Docker & Docker Compose** - Containerization and orchestration
+- **Turbo** - High-performance monorepo build system
+- **ESLint** - Linter for JavaScript/TypeScript
+- **Prettier** - Code formatter
 
-## 📁 Estructura del Proyecto
+## 📁 Project Structure
 
 ```
 shorty-url-app/
-├── 📋 README.md                    # Documentación principal
-├── 📦 package.json                 # Configuración del workspace raíz
-├── 🐳 docker-compose.yml           # Orquestación de contenedores
-├── ⚡ turbo.json                   # Configuración de Turbo
-├── 📝 tsconfig.base.json           # Configuración base de TypeScript
+├── 📋 README.md                    # Main documentation
+├── 📦 package.json                 # Root workspace configuration
+├── 🐳 docker-compose.yml           # Container orchestration
+├── ⚡ turbo.json                   # Turbo configuration
+├── 📝 tsconfig.base.json           # Base TypeScript configuration
 │
 ├── 🎯 apps/
 │   ├── 🔧 api/                     # Backend API
@@ -56,63 +56,63 @@ shorty-url-app/
 │   │   ├── 🐳 Dockerfile.dev
 │   │   ├── 🔄 nodemon.json
 │   │   └── 📂 src/
-│   │       ├── 🚀 index.ts         # Punto de entrada
-│   │       ├── ⚙️ config/          # Configuraciones
-│   │       ├── 🎮 controllers/     # Controladores de rutas
-│   │       ├── 📊 models/          # Modelos de datos
-│   │       ├── 🛣️ routes/          # Definición de rutas
-│   │       ├── 📋 schemas/         # Esquemas de validación
-│   │       ├── 🔧 services/        # Lógica de negocio
-│   │       └── 🛠️ utils/           # Utilidades y helpers
+│   │       ├── 🚀 index.ts         # Entry point
+│   │       ├── ⚙️ config/          # Configurations
+│   │       ├── 🎮 controllers/     # Route controllers
+│   │       ├── 📊 models/          # Data models
+│   │       ├── 🛣️ routes/          # Route definitions
+│   │       ├── 📋 schemas/         # Validation schemas
+│   │       ├── 🔧 services/        # Business logic
+│   │       └── 🛠️ utils/           # Utilities and helpers
 │   │
-│   └── 🎨 client/                  # Frontend React
+│   └── 🎨 client/                  # React Frontend
 │       ├── 📦 package.json
 │       ├── 🐳 Dockerfile.dev
 │       ├── ⚡ vite.config.ts
 │       ├── 🌐 index.html
 │       └── 📂 src/
-│           ├── 🎨 App.tsx          # Componente principal
-│           ├── 🚀 main.tsx         # Punto de entrada
-│           ├── 🧩 components/      # Componentes reutilizables
-│           ├── 🎭 context/         # Contextos de React
-│           ├── 🎣 hooks/           # Hooks personalizados
-│           ├── 🔧 services/        # Servicios de API
-│           ├── 📝 types/           # Definiciones de tipos
-│           └── 🛠️ utils/          # Utilidades del frontend
+│           ├── 🎨 App.tsx          # Main component
+│           ├── 🚀 main.tsx         # Entry point
+│           ├── 🧩 components/      # Reusable components
+│           ├── 🎭 context/         # React contexts
+│           ├── 🎣 hooks/           # Custom hooks
+│           ├── 🔧 services/        # API services
+│           ├── 📝 types/           # Type definitions
+│           └── 🛠️ utils/          # Frontend utilities
 ```
 
-## 🚀 Montaje del Proyecto
+## 🚀 Project Setup
 
-### Prerrequisitos
+### Prerequisites
 
-- **Node.js** (versión 20 o superior)
-- **npm** o **yarn**
-- **MongoDB** (para desarrollo local)
-- **Docker** y **Docker Compose** (para desarrollo con contenedores)
+- **Node.js** (version 20 or higher)
+- **npm** or **yarn**
+- **MongoDB** (for local development)
+- **Docker** and **Docker Compose** (for container development)
 
-### 🔧 Instalación Nativa (NPM)
+### 🔧 Native Installation (NPM)
 
-#### 1. Clonar el repositorio
+#### 1. Clone the repository
 
 ```bash
 git clone https://github.com/alerandon/shorty-url-app.git
 cd shorty-url-app
 ```
 
-#### 2. Instalar dependencias
+#### 2. Install dependencies
 
 ```bash
-# Instalar dependencias del workspace raíz y todas las aplicaciones
+# Install root workspace and all application dependencies
 npm install
 ```
 
-#### 3. Configurar variables de entorno
+#### 3. Configure environment variables
 
 ```bash
-# En la carpeta raíz, crear archivo .env
+# In the root folder, create .env file
 cp .env.example .env
 
-# Configurar las siguientes variables:
+# Configure the following variables:
 API_PORT=3001
 API_DB_USER=user
 API_DB_PASSWORD=password
@@ -123,113 +123,113 @@ API_JWT_SECRET=your-jwt-secret-key
 API_NODE_ENV=development
 ```
 
-#### 4. Iniciar MongoDB
+#### 4. Start MongoDB
 
 ```bash
-# Opción 1: MongoDB local
+# Option 1: Local MongoDB
 mongod
 
-# Opción 2: MongoDB con Docker
+# Option 2: MongoDB with Docker
 docker run -d -p 27017:27017 --name mongodb \
   -e MONGO_INITDB_ROOT_USERNAME=user \
   -e MONGO_INITDB_ROOT_PASSWORD=password \
   mongo:latest
 ```
 
-#### 5. Ejecutar el proyecto
+#### 5. Run the project
 
 ```bash
-# Opción 1: Ejecutar todo el monorepo
+# Option 1: Run the entire monorepo
 npm run dev
 
-# Opción 2: Ejecutar solo la API
+# Option 2: Run only the API
 npm run dev:api
 
-# Opción 3: Ejecutar solo el cliente
+# Option 3: Run only the client
 npm run dev:client
 ```
 
-### 🐳 Instalación con Docker
+### 🐳 Docker Installation
 
-#### 1. Clonar el repositorio
+#### 1. Clone the repository
 
 ```bash
 git clone https://github.com/alerandon/shorty-url-app.git
 cd shorty-url-app
 ```
 
-#### 2. Configurar variables de entorno
+#### 2. Configure environment variables
 
 ```bash
-# Crear archivo .env en la raíz del proyecto
+# Create .env file in the project root
 cp .env.example .env
 ```
 
-#### 3. Construir y ejecutar con Docker Compose
+#### 3. Build and run with Docker Compose
 
 ```bash
-# Construir e iniciar todos los servicios
+# Build and start all services
 docker-compose up --build
 
-# Ejecutar en modo desarrollo con watch (recomendado)
+# Run in development mode with watch (recommended)
 docker-compose watch
 
-# Ejecutar en segundo plano
+# Run in background
 docker-compose up -d
 ```
 
-#### 4. Acceder a la aplicación
+#### 4. Access the application
 
 - **Frontend**: http://localhost:5173
 - **API**: http://localhost:3001
 - **MongoDB**: mongodb://localhost:27017
 
-### 🔍 Scripts Disponibles
+### 🔍 Available Scripts
 
 ```bash
-# Workspace raíz
-npm run dev          # Ejecutar todo el monorepo en modo desarrollo
-npm run build        # Construir todas las aplicaciones
-npm run dev:api      # Ejecutar solo la API
-npm run dev:client   # Ejecutar solo el cliente
+# Root workspace
+npm run dev          # Run entire monorepo in development mode
+npm run build        # Build all applications
+npm run dev:api      # Run only the API
+npm run dev:client   # Run only the client
 
 # API (apps/api)
-npm run dev          # Desarrollo con hot-reload
-npm run build        # Construir para producción
-npm run start        # Ejecutar versión construida
-npm test             # Ejecutar tests
+npm run dev          # Development with hot-reload
+npm run build        # Build for production
+npm run start        # Run built version
+npm test             # Run tests
 
-# Cliente (apps/client)
-npm run dev          # Servidor de desarrollo
-npm run build        # Construir para producción
-npm run preview      # Previsualizar build de producción
-npm run lint         # Linter de código
+# Client (apps/client)
+npm run dev          # Development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run lint         # Code linter
 ```
 
-## 📊 Entidades del Proyecto
+## 📊 Project Entities
 
-### 🔗 Modelo URL
+### 🔗 URL Model
 
-El modelo principal de la aplicación que representa un enlace acortado.
+The main model of the application that represents a shortened link.
 
-#### Estructura de Datos
+#### Data Structure
 
-| Campo         | Tipo       | Descripción                                       | Requerido | Valor por Defecto |
-| ------------- | ---------- | ------------------------------------------------- | --------- | ----------------- |
-| `_id`         | `ObjectId` | Identificador único de MongoDB                    | ✅        | Auto-generado     |
-| `originalUrl` | `String`   | URL original completa a acortar                   | ✅        | -                 |
-| `shortCode`   | `String`   | Código único de 7 caracteres para el enlace corto | ✅        | `nanoid(7)`       |
-| `visitCount`  | `Number`   | Contador de visitas al enlace corto               | ✅        | `0`               |
-| `guestId`     | `String`   | Identificador de sesión del usuario invitado      | ✅        | -                 |
-| `createdAt`   | `Date`     | Fecha y hora de creación del registro             | ✅        | Auto-generado     |
-| `updatedAt`   | `Date`     | Fecha y hora de última actualización              | ✅        | Auto-actualizado  |
+| Field         | Type       | Description                                         | Required | Default Value    |
+| ------------- | ---------- | --------------------------------------------------- | -------- | ---------------- |
+| `_id`         | `ObjectId` | MongoDB unique identifier                           | ✅       | Auto-generated   |
+| `originalUrl` | `String`   | Complete original URL to be shortened               | ✅       | -                |
+| `shortCode`   | `String`   | Unique 7-character code for the short link         | ✅       | `nanoid(7)`      |
+| `visitCount`  | `Number`   | Visit counter for the short link                    | ✅       | `0`              |
+| `guestId`     | `String`   | Guest user session identifier                       | ✅       | -                |
+| `createdAt`   | `Date`     | Record creation date and time                       | ✅       | Auto-generated   |
+| `updatedAt`   | `Date`     | Last update date and time                           | ✅       | Auto-updated     |
 
-#### Ejemplo de Documento
+#### Document Example
 
 ```json
 {
   "_id": "507f1f77bcf86cd799439011",
-  "originalUrl": "https://www.ejemplo.com/una-url-muy-larga-que-necesita-ser-acortada",
+  "originalUrl": "https://www.example.com/a-very-long-url-that-needs-to-be-shortened",
   "shortCode": "aB3xY7z",
   "visitCount": 42,
   "guestId": "guest_a1b2c3d4e5f6",
@@ -238,15 +238,16 @@ El modelo principal de la aplicación que representa un enlace acortado.
 }
 ```
 
-#### Validaciones y Reglas
+#### Validations and Rules
 
-- **originalUrl**: Debe ser una URL válida con protocolo (http/https)
-- **shortCode**: Único en toda la base de datos, generado automáticamente
-- **visitCount**: Solo incrementa, nunca disminuye
-- **guestId**: Permite asociar múltiples URLs a una sesión de usuario
+- **originalUrl**: Must be a valid URL with protocol (http/https)
+- **shortCode**: Unique across the entire database, automatically generated
+- **visitCount**: Only increments, never decreases
+- **guestId**: Allows associating multiple URLs to a user session
 
-#### Índices de Base de Datos
+#### Database Indexes
 
-- `shortCode`: Índice único para búsquedas rápidas
-- `guestId`: Índice para consultas por usuario
-- `createdAt`: Índice para ordenamiento temporal
+- `shortCode`: Unique index for fast searches
+- `guestId`: Index for user queries
+- `createdAt`: Index for temporal sorting
+
